@@ -1,0 +1,784 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="ipfs,web,文件系统,">
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="简介1991年，最早版本的HTTP(超文本传输协议)协议发布, 正式当时这个不怎么起眼的网络协议吹响了互联网行业的号角，随后而来的二十多年，HTTP彻底成为了互联网领域网络协议的绝对霸主。 但是，正如圈内人所言，没有绝对安全的系统一样，也不存在绝对完美的协议。随着时代的发展，HTTP协议爆发出来各种问题，顶尖的工程师们对其缺点越来越不满，抱怨也日益增多。突出体现与以下几个方面">
+<meta name="keywords" content="ipfs,web,文件系统">
+<meta property="og:type" content="article">
+<meta property="og:title" content="下一代WEB协议——IPFS(星际文件系统)">
+<meta property="og:url" content="http://yoursite.com/2018/09/10/下一代WEB协议——IPFS-星际文件系统/index.html">
+<meta property="og:site_name" content="Magic&#39;s Blog">
+<meta property="og:description" content="简介1991年，最早版本的HTTP(超文本传输协议)协议发布, 正式当时这个不怎么起眼的网络协议吹响了互联网行业的号角，随后而来的二十多年，HTTP彻底成为了互联网领域网络协议的绝对霸主。 但是，正如圈内人所言，没有绝对安全的系统一样，也不存在绝对完美的协议。随着时代的发展，HTTP协议爆发出来各种问题，顶尖的工程师们对其缺点越来越不满，抱怨也日益增多。突出体现与以下几个方面">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https://diycode.b0.upaiyun.com/photo/2018/ad694024eccf06883ac2938f7f4132e6.png">
+<meta property="og:image" content="https://diycode.b0.upaiyun.com/photo/2018/780b431b1906b6d7733974015c464f02.png">
+<meta property="og:updated_time" content="2019-09-22T08:46:16.823Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="下一代WEB协议——IPFS(星际文件系统)">
+<meta name="twitter:description" content="简介1991年，最早版本的HTTP(超文本传输协议)协议发布, 正式当时这个不怎么起眼的网络协议吹响了互联网行业的号角，随后而来的二十多年，HTTP彻底成为了互联网领域网络协议的绝对霸主。 但是，正如圈内人所言，没有绝对安全的系统一样，也不存在绝对完美的协议。随着时代的发展，HTTP协议爆发出来各种问题，顶尖的工程师们对其缺点越来越不满，抱怨也日益增多。突出体现与以下几个方面">
+<meta name="twitter:image" content="https://diycode.b0.upaiyun.com/photo/2018/ad694024eccf06883ac2938f7f4132e6.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2018/09/10/下一代WEB协议——IPFS-星际文件系统/">
+
+
+
+
+
+  <title>下一代WEB协议——IPFS(星际文件系统) | Magic's Blog</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Magic's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">个人博客</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/09/10/下一代WEB协议——IPFS-星际文件系统/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Magic">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Magic's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">下一代WEB协议——IPFS(星际文件系统)</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-09-10T15:42:59+08:00">
+                2018-09-10
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/区块链/" itemprop="url" rel="index">
+                    <span itemprop="name">区块链</span>
+                  </a>
+                </span>
+
+                
+                
+                  ， 
+                
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/区块链/IPFS/" itemprop="url" rel="index">
+                    <span itemprop="name">IPFS</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h1><p>1991年，最早版本的HTTP(超文本传输协议)协议发布, 正式当时这个不怎么起眼的网络协议吹响了互联网行业的号角，随后而来的二十多年，HTTP彻底成为了互联网领域网络协议的绝对霸主。 但是，正如圈内人所言，没有绝对安全的系统一样，也不存在绝对完美的协议。随着时代的发展，HTTP协议爆发出来各种问题，顶尖的工程师们对其缺点越来越不满，抱怨也日益增多。突出体现与以下几个方面</p>
+<a id="more"></a>
+<h2 id="HTTP低效并且昂贵"><a href="#HTTP低效并且昂贵" class="headerlink" title="HTTP低效并且昂贵"></a>HTTP低效并且昂贵</h2><p>HTTP请求是从单一的计算机上下载文件，其产生的带宽费用要比基于P2P的分布式网络高出60%, ipfs通过P2P网络协议，除了能够节省带宽，而且能对数据进行备份保存。</p>
+<h2 id="人类的历史数据不能被永久保存，会被删除"><a href="#人类的历史数据不能被永久保存，会被删除" class="headerlink" title="人类的历史数据不能被永久保存，会被删除"></a>人类的历史数据不能被永久保存，会被删除</h2><p>基于HTTP协议的web服务器，其平均的生命周期只有100天。我们之前访问的站点，一旦服务关闭，我们的数据将永久消失，试想一下，随着QQ宠物的关闭下线，我们再也找不回曾经那些美好的记忆了。</p>
+<h2 id="中心化的web服务让权利掌握在少数人手中"><a href="#中心化的web服务让权利掌握在少数人手中" class="headerlink" title="中心化的web服务让权利掌握在少数人手中"></a>中心化的web服务让权利掌握在少数人手中</h2><p>网络已经称为了人类历史上最重要的发明之一，并且深深的影响着我们的生活。但是，不管我们是在淘宝开店还是在微信发表文章，我们都并不自由，核心的权利永远掌握在巨头的手中。</p>
+<h2 id="网络应用太依赖骨干网"><a href="#网络应用太依赖骨干网" class="headerlink" title="网络应用太依赖骨干网"></a>网络应用太依赖骨干网</h2><p>传统的应用保证高可用都是高度依赖骨干网络，IPFS支持创建具有多种弹性的网络，无论是否具有Internet骨干网络，都可以实现持久的高可用。</p>
+<p>创新的火种永远不会被扑灭，正是基于以上的种种的抱怨与矛盾，IPFS诞生了。在2014年的5月，一位来自墨西哥的小伙子Juan Benet发明了IPFS。正如绝大多数天才一样，他也有着亮眼的履历与背景，毕业于举世闻名的斯坦福大学，在2015年参与了大名鼎鼎的Ycombinator计划，并成功创办了Protocol Lab实验室。</p>
+<p>尽管如此，但以上种种都不是IPFS被世人所熟知的原因，尽管IPFS一开始的设计就号称是革命性的技术。 但在其诞生的前几年，并没有引起世人的关注。 相信对区块链有所关注的人们都知道，2017年在区块链领域是非同寻常的一年，比特币价格一度暴涨至2万美金，各种ICO项目层出不穷。 正是这一年，基于IPFS的区块链项目FileCoin诞生了。FileCoin在2017年8月创纪录地募集到了2.5亿美金，而这仅仅是在Token sale出售了10%的代币的情况下，这也意味着FoinCoin还未上线，市值就达到了惊人的25亿美金，虽然这一记录很快就被后来的EOS所超越，但其所取得的成绩也是有目共睹。可以说FoinCoin的成功极大地促进了IPFS技术的发展，越来越多的开发者加入进来贡献代码，其影响力正在以指数般的速度增长。</p>
+<h1 id="理论介绍"><a href="#理论介绍" class="headerlink" title="理论介绍"></a>理论介绍</h1><h2 id="IPFS是什么？"><a href="#IPFS是什么？" class="headerlink" title="IPFS是什么？"></a>IPFS是什么？</h2><p>打开ipfs的<a href="https://ipfs.io/" target="_blank" rel="noopener">官网网站</a>印入眼帘的几个大字，<strong>IPFS is the Distributed Web</strong>, 是的，在创始人严重其目的就是来挑战HTTP的霸主地位，定义下一代的web服务标准。但，随着社区的不断进化与创新，IPFS能干的事情已经隐隐超出了HTTP协议的范畴，除了传输其在存储领域也正闪耀了耀眼的光芒。当然，谁也无法把我历史的进程，IPFS最终能否像HTTP一样大方异彩还值得我们观察。但我相信IPFS，也正在践行着作为一个信仰者的使命。</p>
+<p>前面提到IPFS的由来，其为了解决HTTP的痛点而来，所以IPFS有以下优点</p>
+<ul>
+<li>高效而且廉价</li>
+<li>记录永久保存</li>
+<li>去中心化，机会均等</li>
+<li>不依赖与主干网络，网络弹性</li>
+</ul>
+<h1 id="IPFS安装"><a href="#IPFS安装" class="headerlink" title="IPFS安装"></a>IPFS安装</h1><h2 id="Go-安装"><a href="#Go-安装" class="headerlink" title="Go 安装"></a>Go 安装</h2><p>go get github.com/ipfs/go-ipfs</p>
+<h2 id="源码安装"><a href="#源码安装" class="headerlink" title="源码安装"></a>源码安装</h2><ul>
+<li>下载源码: <a href="https://dist.ipfs.io/#go-ipfs" target="_blank" rel="noopener">源码</a></li>
+<li><p>解压</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">tar xvfz go-ipfs.tar.gz</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>安装</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">cd go-ipfs</span><br><span class="line">./install.sh</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h2 id="测试安装"><a href="#测试安装" class="headerlink" title="测试安装"></a>测试安装</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ipfs --help</span><br></pre></td></tr></table></figure>
+<p>在终端有如下输出<br><img src="https://diycode.b0.upaiyun.com/photo/2018/ad694024eccf06883ac2938f7f4132e6.png" alt></p>
+<h2 id="Ipfs-初始化"><a href="#Ipfs-初始化" class="headerlink" title="Ipfs 初始化"></a>Ipfs 初始化</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ipfs init</span><br></pre></td></tr></table></figure>
+<p><img src="https://diycode.b0.upaiyun.com/photo/2018/780b431b1906b6d7733974015c464f02.png" alt></p>
+<h1 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h1><p>既然知道了IPFS是革命性的技术，那么作为入门，我们首先来看看，如何使用ipfs，以及我们能用ipfs做什么？</p>
+<h2 id="添加文件到ipfs"><a href="#添加文件到ipfs" class="headerlink" title="添加文件到ipfs"></a>添加文件到ipfs</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">echo &quot;hello world&quot; &gt;hello</span><br><span class="line">ipfs add hello</span><br></pre></td></tr></table></figure>
+<h2 id="浏览文件"><a href="#浏览文件" class="headerlink" title="浏览文件"></a>浏览文件</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ipfs cat &lt;the-hash-you-got-here&gt;</span><br></pre></td></tr></table></figure>
+<h2 id="添加一个文件夹"><a href="#添加一个文件夹" class="headerlink" title="添加一个文件夹"></a>添加一个文件夹</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">mkdir foo</span><br><span class="line">mkdir foo/bar</span><br><span class="line">echo &quot;baz&quot; &gt; foo/baz</span><br><span class="line">echo &quot;baz&quot; &gt; foo/bar/baz</span><br><span class="line">ipfs add -r foo</span><br></pre></td></tr></table></figure>
+<h2 id="浏览"><a href="#浏览" class="headerlink" title="浏览"></a>浏览</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">ipfs ls &lt;the-hash-here&gt;</span><br><span class="line">ipfs ls &lt;the-hash-here&gt;/bar</span><br><span class="line">ipfs cat &lt;the-hash-here&gt;/baz</span><br><span class="line">ipfs cat &lt;the-hash-here&gt;/bar/baz</span><br><span class="line">ipfs cat &lt;the-hash-here&gt;/bar</span><br><span class="line">ipfs ls &lt;the-hash-here&gt;/baz</span><br></pre></td></tr></table></figure>
+<h2 id="查看链接信息"><a href="#查看链接信息" class="headerlink" title="查看链接信息"></a>查看链接信息</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">ipfs refs &lt;the-hash-here&gt;</span><br><span class="line">ipfs refs -r &lt;the-hash-here&gt;</span><br><span class="line">ipfs refs --help</span><br></pre></td></tr></table></figure>
+<h2 id="获取文件"><a href="#获取文件" class="headerlink" title="获取文件"></a>获取文件</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">ipfs get &lt;the-hash-here&gt; -o foo2</span><br><span class="line">diff foo foo2</span><br></pre></td></tr></table></figure>
+<h2 id="IPFS对象"><a href="#IPFS对象" class="headerlink" title="IPFS对象"></a>IPFS对象</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">ipfs object get &lt;the-hash-here&gt;</span><br><span class="line">ipfs object get &lt;the-hash-here&gt;/foo2</span><br><span class="line">ipfs object --help</span><br></pre></td></tr></table></figure>
+<h2 id="Pin-GC"><a href="#Pin-GC" class="headerlink" title="Pin + GC"></a>Pin + GC</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">ipfs pin add &lt;the-hash-here&gt;</span><br><span class="line">ipfs repo gc</span><br><span class="line">ipfs ls &lt;the-hash-here&gt;</span><br><span class="line">ipfs pin rm &lt;the-hash-here&gt;</span><br><span class="line">ipfs repo gc</span><br></pre></td></tr></table></figure>
+<h2 id="启动服务"><a href="#启动服务" class="headerlink" title="启动服务"></a>启动服务</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">ipfs daemon  (in another terminal)</span><br><span class="line">ipfs id</span><br></pre></td></tr></table></figure>
+<h2 id="网络"><a href="#网络" class="headerlink" title="网络"></a>网络</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">(must be online)</span><br><span class="line">ipfs swarm peers</span><br><span class="line">ipfs id</span><br><span class="line">ipfs cat &lt;hash-of-remote-object&gt;</span><br></pre></td></tr></table></figure>
+<h2 id="文件挂载"><a href="#文件挂载" class="headerlink" title="文件挂载"></a>文件挂载</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">(warning: fuse is finicky!)</span><br><span class="line">ipfs mount</span><br><span class="line">cd /ipfs/&lt;the-hash-here&gt;</span><br><span class="line">ls</span><br></pre></td></tr></table></figure>
+<h2 id="工具"><a href="#工具" class="headerlink" title="工具"></a>工具</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">ipfs version</span><br><span class="line">ipfs update</span><br><span class="line">ipfs commands</span><br><span class="line">ipfs config --help</span><br><span class="line">open http://localhost:5001/webui</span><br></pre></td></tr></table></figure>
+<h2 id="浏览器"><a href="#浏览器" class="headerlink" title="浏览器"></a>浏览器</h2><h3 id="webui"><a href="#webui" class="headerlink" title="webui"></a>webui</h3><ul>
+<li><a href="http://localhost:5001/webui" target="_blank" rel="noopener">http://localhost:5001/webui</a></li>
+</ul>
+<h3 id="video"><a href="#video" class="headerlink" title="video"></a>video</h3><ul>
+<li><a href="http://localhost:8080/ipfs/QmVc6zuAneKJzicnJpfrqCH9gSy6bz54JhcypfJYhGUFQu/play#/ipfs/QmTKZgRNwDNZwHtJSjCp6r5FYefzpULfy37JvMt9DwvXse" target="_blank" rel="noopener">http://localhost:8080/ipfs/QmVc6zuAneKJzicnJpfrqCH9gSy6bz54JhcypfJYhGUFQu/play#/ipfs/QmTKZgRNwDNZwHtJSjCp6r5FYefzpULfy37JvMt9DwvXse</a></li>
+</ul>
+<p>###images</p>
+<ul>
+<li><a href="http://localhost:8080/ipfs/QmZpc3HvfjEXvLWGQPWbHk3AjD5j8NEN4gmFN8Jmrd5g83/cs" target="_blank" rel="noopener">http://localhost:8080/ipfs/QmZpc3HvfjEXvLWGQPWbHk3AjD5j8NEN4gmFN8Jmrd5g83/cs</a></li>
+</ul>
+<p>###markdown renderer app</p>
+<ul>
+<li><a href="http://localhost:8080/ipfs/QmX7M9CiYXjVeFnkfVGf3y5ixTZ2ACeSGyL1vBJY1HvQPp/mdown" target="_blank" rel="noopener">http://localhost:8080/ipfs/QmX7M9CiYXjVeFnkfVGf3y5ixTZ2ACeSGyL1vBJY1HvQPp/mdown</a></li>
+</ul>
+<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>在本节内容里面，我们介绍了IPFS以及IPFS的安装使用，在quick-start里面的命令建议大家全部敲一遍，熟悉下IPFS，当然，仅仅如此相信大家都不会满意，所以在下一节会用IPFS写一个个人博客系统。真正的体会以下IPFS的魅力，等大家对IPFS感兴趣之后，我们在深入，讲讲IPFS的原理以及源码。</p>
+<h1 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h1><ul>
+<li><a href="https://ipfs.io/docs/" target="_blank" rel="noopener">https://ipfs.io/docs/</a></li>
+</ul>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/ipfs/" rel="tag"># ipfs</a>
+          
+            <a href="/tags/web/" rel="tag"># web</a>
+          
+            <a href="/tags/文件系统/" rel="tag"># 文件系统</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/09/10/浅谈云计算及kubernetes容器部署/" rel="next" title="浅谈云计算及kubernetes容器部署">
+                <i class="fa fa-chevron-left"></i> 浅谈云计算及kubernetes容器部署
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/09/10/群雄逐鹿的大航海时代-谁将定义区块链未来的样子？/" rel="prev" title="群雄逐鹿的大航海时代,谁将定义区块链未来的样子？">
+                群雄逐鹿的大航海时代,谁将定义区块链未来的样子？ <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">Magic</p>
+              <p class="site-description motion-element" itemprop="description">记录所学、所感、所想</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">14</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">8</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">12</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#简介"><span class="nav-number">1.</span> <span class="nav-text">简介</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#HTTP低效并且昂贵"><span class="nav-number">1.1.</span> <span class="nav-text">HTTP低效并且昂贵</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#人类的历史数据不能被永久保存，会被删除"><span class="nav-number">1.2.</span> <span class="nav-text">人类的历史数据不能被永久保存，会被删除</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#中心化的web服务让权利掌握在少数人手中"><span class="nav-number">1.3.</span> <span class="nav-text">中心化的web服务让权利掌握在少数人手中</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#网络应用太依赖骨干网"><span class="nav-number">1.4.</span> <span class="nav-text">网络应用太依赖骨干网</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#理论介绍"><span class="nav-number">2.</span> <span class="nav-text">理论介绍</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#IPFS是什么？"><span class="nav-number">2.1.</span> <span class="nav-text">IPFS是什么？</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#IPFS安装"><span class="nav-number">3.</span> <span class="nav-text">IPFS安装</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Go-安装"><span class="nav-number">3.1.</span> <span class="nav-text">Go 安装</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#源码安装"><span class="nav-number">3.2.</span> <span class="nav-text">源码安装</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#测试安装"><span class="nav-number">3.3.</span> <span class="nav-text">测试安装</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Ipfs-初始化"><span class="nav-number">3.4.</span> <span class="nav-text">Ipfs 初始化</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Quick-Start"><span class="nav-number">4.</span> <span class="nav-text">Quick Start</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#添加文件到ipfs"><span class="nav-number">4.1.</span> <span class="nav-text">添加文件到ipfs</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#浏览文件"><span class="nav-number">4.2.</span> <span class="nav-text">浏览文件</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#添加一个文件夹"><span class="nav-number">4.3.</span> <span class="nav-text">添加一个文件夹</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#浏览"><span class="nav-number">4.4.</span> <span class="nav-text">浏览</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#查看链接信息"><span class="nav-number">4.5.</span> <span class="nav-text">查看链接信息</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#获取文件"><span class="nav-number">4.6.</span> <span class="nav-text">获取文件</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#IPFS对象"><span class="nav-number">4.7.</span> <span class="nav-text">IPFS对象</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Pin-GC"><span class="nav-number">4.8.</span> <span class="nav-text">Pin + GC</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#启动服务"><span class="nav-number">4.9.</span> <span class="nav-text">启动服务</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#网络"><span class="nav-number">4.10.</span> <span class="nav-text">网络</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#文件挂载"><span class="nav-number">4.11.</span> <span class="nav-text">文件挂载</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#工具"><span class="nav-number">4.12.</span> <span class="nav-text">工具</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#浏览器"><span class="nav-number">4.13.</span> <span class="nav-text">浏览器</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#webui"><span class="nav-number">4.13.1.</span> <span class="nav-text">webui</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#video"><span class="nav-number">4.13.2.</span> <span class="nav-text">video</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#总结"><span class="nav-number">5.</span> <span class="nav-text">总结</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#参考"><span class="nav-number">6.</span> <span class="nav-text">参考</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Magic</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Muse</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

@@ -1,0 +1,789 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Docker,Kubernetes,">
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="Abstract：随着技术的发展与社会的进步，人们对资源的高效利用有了更为迫切的需求。当然IT行业也不例外。经历了过去数年间IT行业较为粗旷式的发展，近年来随着互联网、移动互联网的高速发展、成熟，IT资源的按需付费引起了各大厂商的热情关注，而云计算随之也进入大众的视野。尤其最近随着AWS、Google、ALIYUN推出云计算资源的按秒计费，让大众真正意识到将IT资源像用电、用水一样高效利用成为可能">
+<meta name="keywords" content="Docker,Kubernetes">
+<meta property="og:type" content="article">
+<meta property="og:title" content="浅谈云计算及kubernetes容器部署">
+<meta property="og:url" content="http://yoursite.com/2018/09/10/浅谈云计算及kubernetes容器部署/index.html">
+<meta property="og:site_name" content="Magic&#39;s Blog">
+<meta property="og:description" content="Abstract：随着技术的发展与社会的进步，人们对资源的高效利用有了更为迫切的需求。当然IT行业也不例外。经历了过去数年间IT行业较为粗旷式的发展，近年来随着互联网、移动互联网的高速发展、成熟，IT资源的按需付费引起了各大厂商的热情关注，而云计算随之也进入大众的视野。尤其最近随着AWS、Google、ALIYUN推出云计算资源的按秒计费，让大众真正意识到将IT资源像用电、用水一样高效利用成为可能">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2019-09-22T08:46:16.825Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="浅谈云计算及kubernetes容器部署">
+<meta name="twitter:description" content="Abstract：随着技术的发展与社会的进步，人们对资源的高效利用有了更为迫切的需求。当然IT行业也不例外。经历了过去数年间IT行业较为粗旷式的发展，近年来随着互联网、移动互联网的高速发展、成熟，IT资源的按需付费引起了各大厂商的热情关注，而云计算随之也进入大众的视野。尤其最近随着AWS、Google、ALIYUN推出云计算资源的按秒计费，让大众真正意识到将IT资源像用电、用水一样高效利用成为可能">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2018/09/10/浅谈云计算及kubernetes容器部署/">
+
+
+
+
+
+  <title>浅谈云计算及kubernetes容器部署 | Magic's Blog</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Magic's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">个人博客</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/09/10/浅谈云计算及kubernetes容器部署/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Magic">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Magic's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">浅谈云计算及kubernetes容器部署</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-09-10T15:22:04+08:00">
+                2018-09-10
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/云计算/" itemprop="url" rel="index">
+                    <span itemprop="name">云计算</span>
+                  </a>
+                </span>
+
+                
+                
+                  ， 
+                
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/云计算/Docker/" itemprop="url" rel="index">
+                    <span itemprop="name">Docker</span>
+                  </a>
+                </span>
+
+                
+                
+                  ， 
+                
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/云计算/Docker/Kubernetes/" itemprop="url" rel="index">
+                    <span itemprop="name">Kubernetes</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="Abstract："><a href="#Abstract：" class="headerlink" title="Abstract："></a>Abstract：</h1><p><strong>随着技术的发展与社会的进步，人们对资源的高效利用有了更为迫切的需求。当然IT行业也不例外。经历了过去数年间IT行业较为粗旷式的发展，近年来随着互联网、移动互联网的高速发展、成熟，IT资源的按需付费引起了各大厂商的热情关注，而云计算随之也进入大众的视野。尤其最近随着AWS、Google、ALIYUN推出云计算资源的按秒计费，让大众真正意识到将IT资源像用电、用水一样高效利用成为可能。正因如此，云计算正大放异彩，光芒越来越高涨！</strong></p>
+<p><strong>所以，如果数年之后Aliyun成为比水利水电局更大的组织，也不要有丝毫惊讶! !</strong><br><a id="more"></a><br>首先看两张图:<br><img src alt></p>
+<p>Kubernetes这个名字起源于古希腊，是舵手的意思，所以它的Logo即像一张渔网，又像一个罗盘。google采用这个名字的一层深意就是：既然Docker把自己定义为驮着集装箱在大海上自由遨游的鲸鱼，那么google就要以Kubernetes掌舵大航海时代的话语权，“捕获”和“指引”这条鲸鱼按照“主人”设定的路线巡游，确保google倾力打造的新一代容器世界的宏伟蓝图顺利实现。然而无论是因为金钱还是局势，从昨天Docker官方宣布正式原生支持kubernetes开始，Kubernetes正式成为容器时代的海上霸主，当然kubernents最终是否能够一统江湖，还需要我们在座的各位来一起见证！</p>
+<h1 id="一、-Docker是什么？"><a href="#一、-Docker是什么？" class="headerlink" title="一、 Docker是什么？"></a>一、 Docker是什么？</h1><blockquote>
+<p><strong>Docker 是个划时代的开源项目，它彻底释放了计算虚拟化的威力，极大提高了应用的运行效率，降低了云计算资源供应的成本！ 使用 Docker，可以让应用的部署、测试和分发都变得前所未有的高效和轻松！</strong></p>
+</blockquote>
+<p>Docker 最初是 dotCloud 公司创始人 Solomon Hykes 在法国期间发起的一个公司内部项目，它是基于 dotCloud 公司多年云服务技术的一次革新，并于 2013 年 3 月以 Apache 2.0 授权协议开源)，主要项目代码在 GitHub 上进行维护。Docker 项目后来还加入了 Linux 基金会，并成立推动开放容器联盟。</p>
+<p>Docker 自开源后受到广泛的关注和讨论，至今其 GitHub 项目已经超过 3 万 6 千个星标和一万多个 fork。甚至由于 Docker 项目的火爆，在 2013 年底，dotCloud 公司决定改名为 Docker。Docker 最初是在 Ubuntu 12.04 上开发实现的；Red Hat 则从 RHEL 6.5 开始对 Docker 进行支持；Google 也在其 PaaS 产品中广泛应用 Docker。</p>
+<p>Docker 使用 Google 公司推出的 Go 语言 进行开发实现，基于 Linux 内核的 cgroup，namespace，以及 AUFS 类的 Union FS 等技术，对进程进行封装隔离，属于操作系统层面的虚拟化技术。由于隔离的进程独立于宿主和其它的隔离的进程，因此也称其为容器。最初实现是基于 LXC，从 0.7 以后开始去除 LXC，转而使用自行开发的 libcontainer，从 1.11 开始，则进一步演进为使用 runC 和 containerd。</p>
+<p>Docker 在容器的基础上，进行了进一步的封装，从文件系统、网络互联到进程隔离等等，极大的简化了容器的创建和维护。使得 Docker 技术比虚拟机技术更为轻便、快捷。</p>
+<p>下面的图片比较了 Docker 和传统虚拟化方式的不同之处。传统虚拟机技术是虚拟出一套硬件后，在其上运行一个完整操作系统，在该系统上再运行所需应用进程；而容器内的应用进程直接运行于宿主的内核，容器内没有自己的内核，而且也没有进行硬件虚拟。因此容器要比传统虚拟机更为轻便。</p>
+<h1 id="二-、为什么要使用Docker？"><a href="#二-、为什么要使用Docker？" class="headerlink" title="二 、为什么要使用Docker？"></a>二 、为什么要使用Docker？</h1><p>作为一种新兴的虚拟化方式，Docker 跟传统的虚拟化方式相比具有众多的优势。</p>
+<h2 id="1-更高效的利用系统资源"><a href="#1-更高效的利用系统资源" class="headerlink" title="1.更高效的利用系统资源"></a>1.更高效的利用系统资源</h2><p>由于容器不需要进行硬件虚拟以及运行完整操作系统等额外开销，Docker 对系统资源的利用率更高。无论是应用执行速度、内存损耗或者文件存储速度，都要比传统虚拟机技术更高效。因此，相比虚拟机技术，一个相同配置的主机，往往可以运行更多数量的应用。</p>
+<h2 id="2-更快速的启动时间"><a href="#2-更快速的启动时间" class="headerlink" title="2. 更快速的启动时间"></a>2. 更快速的启动时间</h2><p>传统的虚拟机技术启动应用服务往往需要数分钟，而 Docker 容器应用，由于直接运行于宿主内核，无需启动完整的操作系统，因此可以做到秒级、甚至毫秒级的启动时间。大大的节约了开发、测试、部署的时间。</p>
+<p><strong>容器的重置速度比虚拟机快9倍</strong></p>
+<p><strong>容器的平均生存周期是 2.5 天，而传统的云虚拟机是 23 天。</strong></p>
+<p><strong>容器编排对容器的生存周期有重要的影响，自动启动和关闭容器导致了更高的重置率。使用了编排引擎的企业，一般的容器存活时间不会超过 1 天，而没有使用编排引擎的企业，他们的容器平均存活时间为 5.5 天。</strong></p>
+<p><strong>容器的短存活期和高密度意味着需要更好的基础设施监控。监控方案必须是基于主机的，而不是基于角色的。Docker 将促使监控方式不断地发生变化。</strong></p>
+<h2 id="3-一致的运行环境"><a href="#3-一致的运行环境" class="headerlink" title="3.一致的运行环境"></a>3.一致的运行环境</h2><p>开发过程中一个常见的问题是环境一致性问题。由于开发环境、测试环境、生产环境不一致，导致有些 bug 并未在开发过程中被发现。而 Docker 的镜像提供了除内核外完整的运行时环境，确保了应用运行环境一致性，从而不会再出现 “这段代码在我机器上没问题啊” 这类问题。</p>
+<p>例如： 目前我们机器紧缺，需要在一台机上运行多个服务，但是这些服务用了不同的python版本（real 2.7 model 3.5） 如果不采用docker, 就需要virtualenv的虚拟化运行环境。但是系统级的服务还是会相互耦合，产生影响。但是如果利用docker 可以完全隔离开各个服务的运行。而且Datadog的调查报告显示，一台机器上一般会同时运行7个独立的容器。</p>
+<h2 id="4-持续的部署和交付"><a href="#4-持续的部署和交付" class="headerlink" title="4. 持续的部署和交付"></a>4. 持续的部署和交付</h2><p>以我们为例， 测试人员一般需要测试机，有时间一个不同的client需要不同配置的多个测试环境，传统的方式搭建一套测试环境，即便是对环境部署很熟悉也至少需要3-5小时， 但是如果利用docker即使对项目完全不懂，也能分分钟部署完成，只需要一行简单的命令即可完成。</p>
+<p>对开发和运维（DevOps）人员来说，最希望的就是一次创建或配置，可以在任意地方正常运行。</p>
+<p>使用 Docker 可以通过定制应用镜像来实现持续集成、持续交付、部署。开发人员可以通过 Dockerfile 来进行镜像构建，并结合 持续集成(Continuous Integration) 系统进行集成测试，而运维人员则可以直接在生产环境中快速部署该镜像，甚至结合 持续部署(Continuous Delivery/Deployment) 系统进行自动部署。</p>
+<p>而且使用 Dockerfile 使镜像构建透明化，不仅仅开发团队可以理解应用运行环境，也方便运维团队理解应用运行所需条件，帮助更好的生产环境中部署该镜像。</p>
+<h2 id="5-更轻松的迁移"><a href="#5-更轻松的迁移" class="headerlink" title="5. 更轻松的迁移"></a>5. 更轻松的迁移</h2><p>由于 Docker 确保了执行环境的一致性，使得应用的迁移更加容易。Docker 可以在很多平台上运行，无论是物理机、虚拟机、公有云、私有云，甚至是笔记本，其运行结果是一致的。因此用户可以很轻易的将在一个平台上运行的应用，迁移到另一个平台上，而不用担心运行环境的变化导致应用无法正常运行的情况。</p>
+<h2 id="6-更轻松的维护和扩展"><a href="#6-更轻松的维护和扩展" class="headerlink" title="6.更轻松的维护和扩展"></a>6.更轻松的维护和扩展</h2><p>Docker 使用的分层存储以及镜像的技术，使得应用重复部分的复用更为容易，也使得应用的维护更新更加简单，基于基础镜像进一步扩展镜像也变得非常简单。此外，Docker 团队同各个开源项目团队一起维护了一大批高质量的官方镜像，既可以直接在生产环境使用，又可以作为基础进一步定制，大大的降低了应用服务的镜像制作成本。</p>
+<p>比如：基于docker的维护更多的是对编排文件的维护，传统的部署方式完全靠记忆， 不同的时间，不同的人，所采用的部署和维护方式千差万别， 但是采用docker 利用dockerfile docker-compose k8s等编排工具， 部署文档即文档， 不会因为时间与部署人员的变化发生变化。</p>
+<h2 id="7-越来越多的使用者"><a href="#7-越来越多的使用者" class="headerlink" title="7.越来越多的使用者"></a>7.越来越多的使用者</h2><ol>
+<li><p>由 Datadog 监控的 15% 主机运行了 Docker . 两年前，Docker 只有 3% 的市场份额，现在增长到了 15%。从下图可以看到，Docker 增长率在一开始有所波动，但在 2015 年秋天开始趋于稳定。从那个时候开始，Docker 的采用率一直呈稳定的线性增长，由 Datadog 监控的六分之一机器几乎都运行了 Docker。</p>
+</li>
+<li><p>大公司仍然是主要的使用者<br>大公司的增长趋于放缓，但在 Docker 方面，从 2015 年发布的第一份报告开始一直保持领先。一个公司使用的主机越多，就越有可能使用 Docker。将近 60% 的企业使用了 500 台或更多的主机，他们被归类为 Docker 玩家或 Docker 采用者。</p>
+</li>
+</ol>
+<p>据上一份报告显示，使用了大量主机的企业是推动 Docker 采用的主要力量，而最近的数据表明，使用了中等数量（100 到 499 台）主机的企业也成为重要的贡献者。大中型公司的采用率现在几乎趋于一致。</p>
+<ol start="3">
+<li>采用者的容器数量在 9 个月内增长到 5 倍<br>从使用 Docker 的第 1 个月到第 9 个月，采用者的容器平均数量几乎增长到了原先的 5 倍。采用率呈线性增长，而且在第 10 个月后没有下降的势头。另一些数据表明，这种增长模式从上一份报告以来一直保持稳定。</li>
+</ol>
+<p>最重要的是：</p>
+<p>随着行业竞争进入尾声，谁能最大程度的节约资源、优化成本、提高运营效率，就能掌握主动，占据先机。</p>
+<p>谁能最大化的利用现有生产力、扭亏为盈，就能笑到最后，一统天下！</p>
+<h1 id="Docker使用实战"><a href="#Docker使用实战" class="headerlink" title="Docker使用实战"></a>Docker使用实战</h1><p>example：</p>
+<p>image （镜像）:</p>
+<p>container （容器）:</p>
+<p>registry （仓库）:</p>
+<p>例子源码地址：<a href="https://github.com/csunny/kubernetes_deploy/tree/master/examples/mysql" target="_blank" rel="noopener">https://github.com/csunny/kubernetes_deploy/tree/master/examples/mysql</a></p>
+<p>docker 让服务的发布运行变得非常简单，非常轻量，在任何环境，任何时间，我们只需要一份镜像，一份配置文件就可以发布我们的应用.</p>
+<p>docker 三剑客： docker-compose, docker-swarm, docker-machine.</p>
+<h1 id="Kubernetes是什么？"><a href="#Kubernetes是什么？" class="headerlink" title="Kubernetes是什么？"></a>Kubernetes是什么？</h1><p>Kubernetes（K8s）是2014年Google发布的一个开源项目,Google 每周都会运行高达两亿的容器，并且在过去的十年间，他们一直都在使用容器. 在Google内部这个系统曾经叫做Borg，现在更名为Omega. kubernetes的主要功能就是容器管理平台，它提供了丰富的功能，例如resource utilization, high avaliablity, updates, patching, networking, service discovery, monitoring and logging.</p>
+<h1 id="为什么要用kubernetes"><a href="#为什么要用kubernetes" class="headerlink" title="为什么要用kubernetes"></a>为什么要用kubernetes</h1><p>目前主要的容器管理平台有 Swarm、Kubernetes、Mesos、 ECS 这里对几个平台做一个简单的比较：</p>
+<h1 id="Kubernetes的架构及原理简介："><a href="#Kubernetes的架构及原理简介：" class="headerlink" title="Kubernetes的架构及原理简介："></a>Kubernetes的架构及原理简介：</h1><p>Kubernetes APIServer核心功能是提供了各类资源对象（Pod，Rc， Service等）的增、删、改、查及Watch等Http Rest接口，成为集群内各个功能模块之间数据交互和通信的中心枢纽，是整个系统的数据总线和数据中心。除此之外，还有以下特性：</p>
+<ul>
+<li>是集群的管理入口</li>
+<li>是资源配额控制的入口</li>
+<li>提供了完备的集群安全机制</li>
+</ul>
+<p>Controller Manager 作为集群内部的管理中心，负责集群内的Node、Pod副本、服务端点（EndPoint）、命名空间（NameSpace）、服务账号（ServiceAccount）、资源定额（ResourceQuota）等的管理，当某个Node意外Down 机时，Controller manager会及时发现此故障并执行自动化修复流程，确保集群始终处于预期的状态。 Controller Manager又</p>
+<p>包含Rc Controlller，Node Controller等，此处不展开讲述。</p>
+<p>Scheduler在整个系统中承担了“承上启下”的重要功能，“承上”是指负责接收Controller Maneger创建新的Pod，为其安排一个落脚点（根据调度算法计算在哪里创建对应的资源）“启下”是指安置工作完成后，目标Node上的kubelet服务进程接管后续工作，负责Pod的下半生命周期。</p>
+<p>Kubelet，在每个Node上都会运行一个Kubelet服务进程，该进程用于处理Master节点下发到本节点的任务，管理Pod及Pod中的容器。每个kubelet进程会在ApiServer上注册自身信息，定期向Master节点汇报节点资源的使用情况，并通过cAdvisor监控容器和节点资源。</p>
+<p>Kube-proxy是安装在节点上的反向代理，负责服务的负载均衡。当我们Serive的时候，我们首先会经过kube-proxy，然后由kube-proxy负载均衡到对应的服务。</p>
+<p>当然还有一些安全机制以及网络原理，此处不一一讲述。感兴趣的读者可以阅读<a href="https://kubernetes.io/上的文档。" target="_blank" rel="noopener">https://kubernetes.io/上的文档。</a></p>
+<h1 id="Kubernetes使用实践"><a href="#Kubernetes使用实践" class="headerlink" title="Kubernetes使用实践"></a>Kubernetes使用实践</h1><h1 id="看的见的未来——THE-TIME-OF-CONTAINER"><a href="#看的见的未来——THE-TIME-OF-CONTAINER" class="headerlink" title="看的见的未来——THE TIME OF CONTAINER"></a>看的见的未来——THE TIME OF CONTAINER</h1><p>随着云计算1.0 进入尾声, 云计算2.0的时代正式到来，不仅像各个大厂如ALIYUN，AWS等在利用自己的技术积累大赚特赚，就连像easystack，daocloud， cloundIn这样的创业公司亦前仆后继，打算从中分一杯羹。可以说如今云计算的江湖正暗流涌动。当然，没有对比就没有伤害，云计算2.0已不再单单是技术层面的竞争了，不管是以华为为首的基于openstack开源技术的左派，还是以AWS为代表的自研云计算技术的右派，如今的竞争都已不再单单是技术层面的竞争了，更多的是数据的竞争，是行业解决方案的竞争，是如何更好的帮助传统行业业务落地与赋能的竞争。</p>
+<p>说到这里，不得不深入的探讨一下目前整个云计算市场的商业格局了，可以说随着新零售、智能制造、LoT、AR/VR等的发展，云计算正在逐步成为一种基础的计算资源，一种基础设施。目前像AWS、Aliyun、Google、JD这样掌握了海量数据的互联网公司，都在利用自己的云计算资源+数据资源在给传统行业提供解决方案，以阿里云为主，Aliyun提出的口号是赋能传统企业，即利用自己在云计算方面的技术积累，为传统企业提供行业的解决方案，搭建适用于传统行业的混合云架构，可以说在这条路上，已经领先了绝大多数的云计算厂商，当然华为采取的手段也大同小异，由于华为起家于通信，可以说在硬件、传统制造领域有着无与伦比的优势，所以像中芯国际为代表的等一批制造厂商正在或者已经接入了华为的云计算平台。不同于大公司商业布局与角逐，很多创业小公司也在自己独有的一片天地中“喝酒吃肉”颇为滋润。当然，不像大公司一样全盘通吃，小公司更多的是在独有的一个领域的积累，帮助某一个细分的传统领域，提供解决方案与服务比如类似酷家乐这样的设计平台，类似的企业还有很多，有针对服装行业的，有针对餐饮的，4S店的等等。通常这一类的公司或者服务被称为“行业云”.</p>
+<p>总之，云计算再怎么发展，都离不开一条亘古不变的规律，谁能提供更可靠、更高效、更实惠的服务，谁就能在这场角逐中站稳脚跟。相反，如果把云计算技术，容器技术当成是一种噱头或者是商业炒作，并不能优化资源，提高效率的话，终归会死的很惨。而我们作为这个时代的技术人，如果能借鉴他们的技术架构与方案，部署出适合自己的技术架构，为公司节约成本就显得颇为重要，且不说最终会节约多大的成本，单是技术的积累就值得我们花心思去尝试了，更何况尝试的代价也微乎其微。</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Docker/" rel="tag"># Docker</a>
+          
+            <a href="/tags/Kubernetes/" rel="tag"># Kubernetes</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/09/10/下一代WEB协议——IPFS-星际文件系统/" rel="prev" title="下一代WEB协议——IPFS(星际文件系统)">
+                下一代WEB协议——IPFS(星际文件系统) <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">Magic</p>
+              <p class="site-description motion-element" itemprop="description">记录所学、所感、所想</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">14</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">8</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">12</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Abstract："><span class="nav-number">1.</span> <span class="nav-text">Abstract：</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#一、-Docker是什么？"><span class="nav-number">2.</span> <span class="nav-text">一、 Docker是什么？</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#二-、为什么要使用Docker？"><span class="nav-number">3.</span> <span class="nav-text">二 、为什么要使用Docker？</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-更高效的利用系统资源"><span class="nav-number">3.1.</span> <span class="nav-text">1.更高效的利用系统资源</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-更快速的启动时间"><span class="nav-number">3.2.</span> <span class="nav-text">2. 更快速的启动时间</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-一致的运行环境"><span class="nav-number">3.3.</span> <span class="nav-text">3.一致的运行环境</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-持续的部署和交付"><span class="nav-number">3.4.</span> <span class="nav-text">4. 持续的部署和交付</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#5-更轻松的迁移"><span class="nav-number">3.5.</span> <span class="nav-text">5. 更轻松的迁移</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#6-更轻松的维护和扩展"><span class="nav-number">3.6.</span> <span class="nav-text">6.更轻松的维护和扩展</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#7-越来越多的使用者"><span class="nav-number">3.7.</span> <span class="nav-text">7.越来越多的使用者</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Docker使用实战"><span class="nav-number">4.</span> <span class="nav-text">Docker使用实战</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Kubernetes是什么？"><span class="nav-number">5.</span> <span class="nav-text">Kubernetes是什么？</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#为什么要用kubernetes"><span class="nav-number">6.</span> <span class="nav-text">为什么要用kubernetes</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Kubernetes的架构及原理简介："><span class="nav-number">7.</span> <span class="nav-text">Kubernetes的架构及原理简介：</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Kubernetes使用实践"><span class="nav-number">8.</span> <span class="nav-text">Kubernetes使用实践</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#看的见的未来——THE-TIME-OF-CONTAINER"><span class="nav-number">9.</span> <span class="nav-text">看的见的未来——THE TIME OF CONTAINER</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Magic</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Muse</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

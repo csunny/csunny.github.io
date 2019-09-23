@@ -1,0 +1,834 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="IPFS,">
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="简介Bitswap是IPFS的数据交易模型。它的目的是用来从其他节点请求或发送数据。Bitswap有两个主要的功能  尝试从网络中获取已被客户端请求的数据。 发送自己所拥有的数据给需要的节点。  介绍Bitswap是IPFS的中心块交换协议。它处理IPFS用户、普通用户以及应用的请求，从网络中获取数据。它用来跟其他节点的Bitswap相互通信来交换彼此所需的数据。">
+<meta name="keywords" content="IPFS">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Bitswap原理及实现">
+<meta property="og:url" content="http://yoursite.com/2018/09/18/Bitswap原理及实现/index.html">
+<meta property="og:site_name" content="Magic&#39;s Blog">
+<meta property="og:description" content="简介Bitswap是IPFS的数据交易模型。它的目的是用来从其他节点请求或发送数据。Bitswap有两个主要的功能  尝试从网络中获取已被客户端请求的数据。 发送自己所拥有的数据给需要的节点。  介绍Bitswap是IPFS的中心块交换协议。它处理IPFS用户、普通用户以及应用的请求，从网络中获取数据。它用来跟其他节点的Bitswap相互通信来交换彼此所需的数据。">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://yoursite.com/2018/09/18/Bitswap原理及实现/Bitswap-18779f16-21e3-4d2b-8b69-8887a379dfe0.png">
+<meta property="og:updated_time" content="2019-09-22T08:46:16.819Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Bitswap原理及实现">
+<meta name="twitter:description" content="简介Bitswap是IPFS的数据交易模型。它的目的是用来从其他节点请求或发送数据。Bitswap有两个主要的功能  尝试从网络中获取已被客户端请求的数据。 发送自己所拥有的数据给需要的节点。  介绍Bitswap是IPFS的中心块交换协议。它处理IPFS用户、普通用户以及应用的请求，从网络中获取数据。它用来跟其他节点的Bitswap相互通信来交换彼此所需的数据。">
+<meta name="twitter:image" content="http://yoursite.com/2018/09/18/Bitswap原理及实现/Bitswap-18779f16-21e3-4d2b-8b69-8887a379dfe0.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2018/09/18/Bitswap原理及实现/">
+
+
+
+
+
+  <title>Bitswap原理及实现 | Magic's Blog</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Magic's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">个人博客</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/09/18/Bitswap原理及实现/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Magic">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Magic's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Bitswap原理及实现</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-09-18T18:46:52+08:00">
+                2018-09-18
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/IPFS/" itemprop="url" rel="index">
+                    <span itemprop="name">IPFS</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h2><p>Bitswap是IPFS的数据交易模型。它的目的是用来从其他节点请求或发送数据。Bitswap有两个主要的功能</p>
+<ol>
+<li>尝试从网络中获取已被客户端请求的数据。</li>
+<li>发送自己所拥有的数据给需要的节点。</li>
+</ol>
+<h2 id="介绍"><a href="#介绍" class="headerlink" title="介绍"></a>介绍</h2><p>Bitswap是IPFS的中心块交换协议。它处理IPFS用户、普通用户以及应用的请求，从网络中获取数据。它用来跟其他节点的Bitswap相互通信来交换彼此所需的数据。<br><a id="more"></a><br>Bitswap是基于消息的协议，而不是回复。所有的消息包含需求清单、数据块。在接收到需求清单之后，IPFS节点或发出其拥有的数据给需求方。当接收到数据块之后，节点应该发送一个Cancel通知表明它不再需求相应的数据块。在协议层Bitswap是相当简单。</p>
+<p>尽管Bitswap是一个相当简单的协议，考虑到时间和内存性能，也有很多值得关注的点。我们的目的是在这里尽量详细的记录这些，为了将来实现的时候可以不断迭代。</p>
+<h2 id="子系统"><a href="#子系统" class="headerlink" title="子系统"></a>子系统</h2><p>在Bitswap管理中两个主要的流程： 从其他节点请求数据和发送数据给其他节点。 数据块请求主要由需求管理员来调节，它告诉节点是否我们需要新的数据块。发送数据块主要由决策引擎处理，它决定了如何在节点之间进行资源分配。</p>
+<p><img src="Bitswap-18779f16-21e3-4d2b-8b69-8887a379dfe0.png" alt></p>
+<h2 id="类型"><a href="#类型" class="headerlink" title="类型"></a>类型</h2><p>如下描述的类型是Bitswap子系统中描述的。</p>
+<ul>
+<li>CID: 使用特定数据块的内容寻址标识符</li>
+<li>Peer: 链接的另外的Bitswap实例</li>
+<li>Block： 二进制blob</li>
+<li>Message： Bitswap 消息</li>
+<li>Entry：在需求列表中，添加/删除特定的CID时可能包含在消息中的需求列表，其中包括<ul>
+<li>CID    一个特定的块</li>
+<li>Priority    用户想要的CID的优先级</li>
+<li>Cancel    一个bool值，旨在从我们的需求列表中删除CID。</li>
+</ul>
+</li>
+</ul>
+<p>Ledger：两个节点之间数据交换的聚合值。每个节点为其他节点存储一个Ledger。</p>
+<h2 id="Bitswap消息"><a href="#Bitswap消息" class="headerlink" title="Bitswap消息"></a>Bitswap消息</h2><p>单个Bitswap消息可能包含以下任意内容</p>
+<ul>
+<li>发件人的需求清单。此需求列表可能是发件人完整的需求列表，也可能仅仅是接收者需要知道的需求列表。</li>
+<li>数据块。这些是接收者请求的数据块。</li>
+</ul>
+<p>消息格式</p>
+<pre><code>message Message{
+    message Wantlist {
+        message Entry{
+            optional string block = 1; // the block key 
+            optional int32 priority = 2; // the priority (normalized). default to 1
+            optional bool cancel = 3;   // whether this revokes an entry
+        }
+        repeated Entry entries = 1;  // a list of wantlist entries.
+        optional bool full = 2;   // whether this is the full wantlist. default to false.
+    }
+    optional Wantlist wanlist = 1;
+    repeated bytes blocks = 2;  
+}
+</code></pre><h2 id="需求管理者"><a href="#需求管理者" class="headerlink" title="需求管理者"></a>需求管理者</h2><p>需求管理者处理块请求。对于请求的块，通过cid认证，Bitswap.GetBlock(cid)方法被调用。Bitswap.GetBlock(cid)从网络中请求cid，如果收到相应的块，则返回。更具体来讲，Bitswap.GetBlock(cid)添加cid到需求列表中。需求管理者通过向每个节点的消息队列中添加条目来更新所有节点。</p>
+<h2 id="决策引擎"><a href="#决策引擎" class="headerlink" title="决策引擎"></a>决策引擎</h2><p>决策引擎如何在节点之间分配资源。当接收到一个需求列表时，消息会发送给决策引擎。对每一个需求列表中的CID，都有相应的块，块有一个任务添加到任务队列。一旦块被发送到节点的消息队列中，我们认为任务已经完成了。</p>
+<p>在决策引擎中主要的数据结构是节点请求队列(PRQ)。PRQ添加节点到加权队列中，其中权重基于对一个或者多个节点的度量。这也是Bitswap策略的来源。当前，策略是一个函数，它的输入是ledger，输出是节点的权重。然后节点在各自的任务队列中提供任务。在给定的循环轮次中，每个节点的数据量由它们在队列中的秀昂队权重确定。</p>
+<h2 id="消息队列"><a href="#消息队列" class="headerlink" title="消息队列"></a>消息队列</h2><p>每一个激活的节点都有一个相应的消息队列。消息队列保存要发送给节点的下一条消息。消息队列从其他的子系统中接收更新。</p>
+<ul>
+<li>需求管理者：当CID从需求列表添加或删除时，我们必须更新节点。这些需求列表的更新被发送到其他所有节点的消息队列中。</li>
+<li>决策引擎：当我们拥有节点需要的块，并且决策引擎决定发送这个块，我们广播这个块到其他节点的消息队列。</li>
+</ul>
+<p>任务工作者观察消息队列，将消息从队列中出列，并且发送给相应的接收者。</p>
+<h2 id="网络"><a href="#网络" class="headerlink" title="网络"></a>网络</h2><p>网络是表示通过一个或多个链接到我们的所有Bitswap节点的抽象。Bitswap消息流流入或流出的网络。在一个任意的网络中，我们必须假设我们所有的同伴都是理性的和自私的。</p>
+<h1 id="实现细节"><a href="#实现细节" class="headerlink" title="实现细节"></a>实现细节</h1><h2 id="消息合并"><a href="#消息合并" class="headerlink" title="消息合并"></a>消息合并</h2><p>当已包含Bitswap消息的消息队列收到另一个消息队列时，新的消息应该与原消息合并，以减少发送单独数据包的开销。</p>
+<h2 id="Bitswap会话"><a href="#Bitswap会话" class="headerlink" title="Bitswap会话"></a>Bitswap会话</h2><p>Bitswap会话是尝试优化发送到其他Bitswap客户端的块请求。当从网络中请求块图时，我们发送一个需求清单去更新包含根块给所有的节点。对于每个发送根块的节点，我们将此节点添加到图的激活集中。然后我们将图中的其他节点的所有请求发送到活动集中的节点。拥有图根节点的节点可能也会拥有其子节点，同时没有根节点的节点可能没有子节点。</p>
+<p>实施建议</p>
+<ul>
+<li>维护一组“在线合作”节点</li>
+<li>协议侦听器接受伙伴接受消息流</li>
+<li>协议发送方向合作伙伴打开流发送消息</li>
+<li>分离出一个决策引擎，选择将哪些块、在何时、发送给哪些节点。</li>
+</ul>
+<p>Sender</p>
+<ul>
+<li>打开bitswap流</li>
+<li>发送一个或多个bitswap消息</li>
+<li>关闭bitswap流</li>
+</ul>
+<p>Listener</p>
+<ul>
+<li>接受bitswap流</li>
+<li>接受一个或多个bitswap流</li>
+<li>关闭bitswap流</li>
+</ul>
+<p>Events</p>
+<ul>
+<li>bitswap.addedBlock(block)<ul>
+<li>观察是否有任何节点需要此块，并发送</li>
+</ul>
+</li>
+<li>bitswap.getBlock(key, cb)<ul>
+<li>添加到需求列表</li>
+<li>可能会发送需求列表更新到其他节点</li>
+</ul>
+</li>
+<li>bitswap.cancelGet(key)<ul>
+<li>需求列表取消</li>
+</ul>
+</li>
+<li>bitswap.receivedMessage(msg)<ul>
+<li>处理需求列表变更</li>
+<li>处理块</li>
+</ul>
+</li>
+<li>bitswap.peerConnected(peer)<ul>
+<li>添加节点</li>
+</ul>
+</li>
+<li>bitswap.peerDisconnected(peer)<ul>
+<li>移除节点</li>
+</ul>
+</li>
+</ul>
+<p>Tricky Bits</p>
+<ul>
+<li>客户端bitswap可能会调用getBlock 然后cancelBlock</li>
+<li>合作伙伴可能会发送垃圾邮件</li>
+<li>针对每个用户的标准化优先级</li>
+</ul>
+<p>Modules</p>
+<ul>
+<li>bitswap-decision-engine</li>
+<li>bitswap-message</li>
+<li>bitswap-net</li>
+<li>bitswap-wantlist</li>
+</ul>
+<p>Notes</p>
+<pre><code>var bs = new BlockService(repo, bitswap)
+bs.getBlock(multihash, (err, block)=&gt;{
+    // try to fetch from repo
+    // if not -&gt; ask bitswap
+        // bitswap will cb() once the block is back, once. 
+            // bitswap will write to the repo as well.
+})
+</code></pre><h1 id="实现"><a href="#实现" class="headerlink" title="实现"></a>实现</h1><ul>
+<li>Go语言<a href="https://github.com/ipfs/go-ipfs/tree/master/exchange/bitswap" target="_blank" rel="noopener">实现</a></li>
+<li>js<a href="https://github.com/ipfs/js-ipfs-bitswap" target="_blank" rel="noopener">实现</a></li>
+</ul>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/IPFS/" rel="tag"># IPFS</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/09/17/IPFS架构/" rel="next" title="IPFS架构概述">
+                <i class="fa fa-chevron-left"></i> IPFS架构概述
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/09/19/DEX概述及实现/" rel="prev" title="DEX概述及实现">
+                DEX概述及实现 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">Magic</p>
+              <p class="site-description motion-element" itemprop="description">记录所学、所感、所想</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">14</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">8</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">12</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#简介"><span class="nav-number">1.</span> <span class="nav-text">简介</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#介绍"><span class="nav-number">2.</span> <span class="nav-text">介绍</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#子系统"><span class="nav-number">3.</span> <span class="nav-text">子系统</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#类型"><span class="nav-number">4.</span> <span class="nav-text">类型</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Bitswap消息"><span class="nav-number">5.</span> <span class="nav-text">Bitswap消息</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#需求管理者"><span class="nav-number">6.</span> <span class="nav-text">需求管理者</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#决策引擎"><span class="nav-number">7.</span> <span class="nav-text">决策引擎</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#消息队列"><span class="nav-number">8.</span> <span class="nav-text">消息队列</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#网络"><span class="nav-number">9.</span> <span class="nav-text">网络</span></a></li></ol><li class="nav-item nav-level-1"><a class="nav-link" href="#实现细节"><span class="nav-number"></span> <span class="nav-text">实现细节</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#消息合并"><span class="nav-number">1.</span> <span class="nav-text">消息合并</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Bitswap会话"><span class="nav-number">2.</span> <span class="nav-text">Bitswap会话</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#实现"><span class="nav-number"></span> <span class="nav-text">实现</span></a></li></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Magic</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Muse</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

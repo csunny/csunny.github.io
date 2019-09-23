@@ -1,0 +1,732 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Python,编程语言,">
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="简介:Python作为炙手可热的语言，在Web开发、DevOps、数据分析、AI等领域都有优秀的表现与广泛的应用。我作为一个多年的Pythoner，简单梳理一下Python语言的学习路线。 Python语言的学习，我自认为跟学习其他语言没多大区别。相反Python由于简洁的语法，优雅的设计。更容易让初学者上手。 我自认为学好Python需要经历以下阶段:">
+<meta name="keywords" content="Python,编程语言">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Python学习路线浅谈">
+<meta property="og:url" content="http://yoursite.com/2018/09/12/Python学习路线浅谈/index.html">
+<meta property="og:site_name" content="Magic&#39;s Blog">
+<meta property="og:description" content="简介:Python作为炙手可热的语言，在Web开发、DevOps、数据分析、AI等领域都有优秀的表现与广泛的应用。我作为一个多年的Pythoner，简单梳理一下Python语言的学习路线。 Python语言的学习，我自认为跟学习其他语言没多大区别。相反Python由于简洁的语法，优雅的设计。更容易让初学者上手。 我自认为学好Python需要经历以下阶段:">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2019-09-22T08:46:16.823Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Python学习路线浅谈">
+<meta name="twitter:description" content="简介:Python作为炙手可热的语言，在Web开发、DevOps、数据分析、AI等领域都有优秀的表现与广泛的应用。我作为一个多年的Pythoner，简单梳理一下Python语言的学习路线。 Python语言的学习，我自认为跟学习其他语言没多大区别。相反Python由于简洁的语法，优雅的设计。更容易让初学者上手。 我自认为学好Python需要经历以下阶段:">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2018/09/12/Python学习路线浅谈/">
+
+
+
+
+
+  <title>Python学习路线浅谈 | Magic's Blog</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Magic's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">个人博客</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/09/12/Python学习路线浅谈/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Magic">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Magic's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Python学习路线浅谈</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-09-12T17:39:10+08:00">
+                2018-09-12
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/编程语言-Python/" itemprop="url" rel="index">
+                    <span itemprop="name">编程语言 - Python</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="简介"><a href="#简介" class="headerlink" title="简介:"></a>简介:</h1><p><strong>Python作为炙手可热的语言，在Web开发、DevOps、数据分析、AI等领域都有优秀的表现与广泛的应用。我作为一个多年的Pythoner，简单梳理一下Python语言的学习路线。</strong></p>
+<p><strong>Python语言的学习，我自认为跟学习其他语言没多大区别。相反Python由于简洁的语法，优雅的设计。更容易让初学者上手。 我自认为学好Python需要经历以下阶段:</strong></p>
+<a id="more"></a>
+<h3 id="一、Hello-World，与基础语法"><a href="#一、Hello-World，与基础语法" class="headerlink" title="一、Hello World，与基础语法"></a>一、Hello World，与基础语法</h3><p>Python的安装运行，能够配置好一个可以写代码的环境，这里面包括</p>
+<ol>
+<li>Python的安装</li>
+<li>代码编辑器的安装  初学者推荐(pycharm,后面切换成vscode)</li>
+<li>写一个hello world程序并成功运行 </li>
+<li>过一遍W3Cshool上的Python基础教程</li>
+</ol>
+<p>如果做完了上面的部分，廖雪峰老师的Python系列教程是值得过一遍的。另外推荐基本Python非常经典的基本书籍：</p>
+<ul>
+<li>Python编程基础</li>
+<li>Python CookBook3</li>
+<li>流利的Python</li>
+</ul>
+<p>上面提到的书籍不一定要一次看完，这几本书相当有用，可以作为参考数目，时常翻来看看。我每次重新阅读都感觉收获颇多。</p>
+<h3 id="二、代码实战"><a href="#二、代码实战" class="headerlink" title="二、代码实战"></a>二、代码实战</h3><p>有了前面的基础，实战就非常重要了，因为只有实战才能真的掌握这项技能。就编程这项技能来说，实战永远是很重要的。 所以这个阶段可以写代码。打基础的话，我推荐以数据结构与算法为主. 下面是Github上我写的Python数据结构与算法的一个开源项目。很基础，也很完善。非常适合python代码实战。<a href="https://github.com/csunny/algorithm" target="_blank" rel="noopener">Python数据结构与算法</a></p>
+<p>数据结构与算法只能熟悉Python语法、以及锻炼思维逻辑。但还不够，需要写几个项目。 初期我认为以小项目为主。推荐写类似博客系统或者图书管理系统等简单的工程。这个过程中推荐使用一些开源的框架。比如flask、django等web框架。</p>
+<p>如果以上都掌握了，那么尽可能的加入到一些team里面吧，因为初学者一般不知道自己可以用哪些项目来锻炼自己，项目组里面会有人给你分配任务，带你升级打怪。</p>
+<h3 id="三、阅读源码、研究架构"><a href="#三、阅读源码、研究架构" class="headerlink" title="三、阅读源码、研究架构"></a>三、阅读源码、研究架构</h3><p>做完前面两点，相信你已经是一个合格的程序员了，这时候就需要对语言对技术进行进一步的挖掘，所以需要看源代码。 主要研究几个比较优秀项目的源代码。 当然，读源代码的过程中我相信一定会遇到很多问题，因为这个阶段之后，技术已经不是单一的Python语言层面了，它会涉及到很多方面。网络啊、存储啊、算法啊、架构啊等等一系列的知识。这里也有一个研究源码来利用python实现的开源项目，欢迎交流。<a href="https://github.com/csunny/py-bitcoin" target="_blank" rel="noopener">Python比特币实现</a></p>
+<h3 id="四、博览群书"><a href="#四、博览群书" class="headerlink" title="四、博览群书"></a>四、博览群书</h3><p>做到前面几点，我相信你已经是一个高级程序员了，接下来就要朝着资深、专家迈进了。当然，难度也会有显著的提升。需要阅读大量的书籍，需要对公司业务、技术结构等等各方面都有了解。</p>
+<p>正因此，这个阶段需要博览群书，当然这里的书不仅仅局限于书本。还有很多其他任何在技术领域值得学习与提高的东西。</p>
+<h3 id="五、迈向卓越"><a href="#五、迈向卓越" class="headerlink" title="五、迈向卓越"></a>五、迈向卓越</h3><p>如果坚持下来，一直进步，到这一步，已经把很多人甩到后面了。换句话说，在编程这个领域已经算是专家级别的高手了。至于成为专家之后怎么发展。嗯，我也不知道。总之已经很棒了，你的思维模式也已经能够独立思考来让你自己规划接下来的目标与思路了。</p>
+<h3 id="六、总结"><a href="#六、总结" class="headerlink" title="六、总结"></a>六、总结</h3><p>其实前面说了那么多，都不是重要的。最重要只有四个字： 坚持、行动！</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Python/" rel="tag"># Python</a>
+          
+            <a href="/tags/编程语言/" rel="tag"># 编程语言</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/09/11/区块链底层技术学习路线/" rel="next" title="区块链底层技术学习路线">
+                <i class="fa fa-chevron-left"></i> 区块链底层技术学习路线
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/09/17/IPFS架构/" rel="prev" title="IPFS架构概述">
+                IPFS架构概述 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">Magic</p>
+              <p class="site-description motion-element" itemprop="description">记录所学、所感、所想</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">14</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">8</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">12</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#简介"><span class="nav-number">1.</span> <span class="nav-text">简介:</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#一、Hello-World，与基础语法"><span class="nav-number">1.0.1.</span> <span class="nav-text">一、Hello World，与基础语法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#二、代码实战"><span class="nav-number">1.0.2.</span> <span class="nav-text">二、代码实战</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#三、阅读源码、研究架构"><span class="nav-number">1.0.3.</span> <span class="nav-text">三、阅读源码、研究架构</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#四、博览群书"><span class="nav-number">1.0.4.</span> <span class="nav-text">四、博览群书</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#五、迈向卓越"><span class="nav-number">1.0.5.</span> <span class="nav-text">五、迈向卓越</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#六、总结"><span class="nav-number">1.0.6.</span> <span class="nav-text">六、总结</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Magic</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Muse</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

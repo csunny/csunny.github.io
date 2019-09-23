@@ -1,0 +1,831 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="IPFS,架构,">
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="目录 IPFS and Merkle DAG Nodes and Network Model The Stack Applications and Datastructure   - on top of IPFS Lifetime of fetching an object IPFS User Interfaces">
+<meta name="keywords" content="IPFS,架构">
+<meta property="og:type" content="article">
+<meta property="og:title" content="IPFS架构概述">
+<meta property="og:url" content="http://yoursite.com/2018/09/17/IPFS架构/index.html">
+<meta property="og:site_name" content="Magic&#39;s Blog">
+<meta property="og:description" content="目录 IPFS and Merkle DAG Nodes and Network Model The Stack Applications and Datastructure   - on top of IPFS Lifetime of fetching an object IPFS User Interfaces">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://yoursite.com/2018/09/17/IPFS架构/stack-f1d6078b-9a67-4ae6-ae77-a71a6fbc6c0e.png">
+<meta property="og:updated_time" content="2019-09-22T08:46:16.822Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="IPFS架构概述">
+<meta name="twitter:description" content="目录 IPFS and Merkle DAG Nodes and Network Model The Stack Applications and Datastructure   - on top of IPFS Lifetime of fetching an object IPFS User Interfaces">
+<meta name="twitter:image" content="http://yoursite.com/2018/09/17/IPFS架构/stack-f1d6078b-9a67-4ae6-ae77-a71a6fbc6c0e.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2018/09/17/IPFS架构/">
+
+
+
+
+
+  <title>IPFS架构概述 | Magic's Blog</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Magic's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">个人博客</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/09/17/IPFS架构/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Magic">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Magic's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">IPFS架构概述</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-09-17T19:13:43+08:00">
+                2018-09-17
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/IPFS/" itemprop="url" rel="index">
+                    <span itemprop="name">IPFS</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="目录"><a href="#目录" class="headerlink" title="目录"></a>目录</h2><ul>
+<li>IPFS and Merkle DAG</li>
+<li>Nodes and Network Model</li>
+<li>The Stack</li>
+<li>Applications and Datastructure   - on top of IPFS</li>
+<li>Lifetime of fetching an object</li>
+<li>IPFS User Interfaces<a id="more"></a>
+</li>
+</ul>
+<h2 id="IPFS-和Merkle-DAG"><a href="#IPFS-和Merkle-DAG" class="headerlink" title="IPFS 和Merkle DAG"></a>IPFS 和Merkle DAG</h2><p>Ipfs的核心是MerkleDAG，是一个连接为hash值的有向无环图。这为IPFS中的所有对象都提供了如下特性:</p>
+<ul>
+<li>认证   - 内容可以做hash运算并且可以通过连接hash值做反向验证。</li>
+<li>持久   -一次拉取，永久缓存。</li>
+<li>普适   - 任何数据结构都可以用merkledag来表达</li>
+<li>去中心化 - 对象可以被任何人创建，而不需要集中的写入者。</li>
+</ul>
+<p>反过来，这些特性使得系统具有如下优势：</p>
+<ul>
+<li>连接是根据内容寻址的</li>
+<li>对象可以由不受信任的服务提供</li>
+<li>对象可以被永久缓存</li>
+<li>对象可以被离线创建或使用</li>
+<li>网络可以分区和合并</li>
+<li>任何数据结构都可以建模并分发</li>
+</ul>
+<p>IPFS是一个网络协议栈，用来组织代理网络来创建、发布、分发、服务和下载Merkledags，它是自证的、去中心化的、永久的web系统。</p>
+<h2 id="节点和网络模型"><a href="#节点和网络模型" class="headerlink" title="节点和网络模型"></a>节点和网络模型</h2><p>IPFS 网络使用基于PKI的身份认证。一个ipfs节点是一个程序包含查询、分发、和复制MerkleDag 对象。其标识由私钥定义。比如：</p>
+<pre><code>privatekey, publicKey := keygen()
+nodeID := multihash(publicKey)
+</code></pre><ul>
+<li><p>MultiHash and upgradeable Hash</p>
+<p>在ipfs中所有的hash都被multihash编码，multihash是一个自描述的hash格式。 实际hash函数的使用，依赖与安全的需求。IPFS加密系统是可升级的，意味着hash函数出问题之后，网络可以迁移到更强壮的hash。天下没有免费的午餐，因为对象可能需要重新计算hash值，或者链接重新复制。 但是要确保不要假设原先预定义的hash长度可以适应未来的hash函数。</p>
+<p>  sha2-256<br>  sha2-512<br>  sha3</p>
+</li>
+</ul>
+<h2 id="技术栈"><a href="#技术栈" class="headerlink" title="技术栈"></a>技术栈</h2><p>IPFS有一个模块化的技术协议栈。每一层都有多个实现。此规范仅仅定义层之间的接口，以及简要提及可能的实现。</p>
+<p>IPFS有5层：</p>
+<ul>
+<li>命令空间(naming)  - 自证的PKI命名空间（IPNS）</li>
+<li>MerkleDag  - 数据结构格式(thin waist)</li>
+<li>交换  - 块交换和复制</li>
+<li>路由   - 本地节点和对象</li>
+<li>网络   - 在节点之间建立链接</li>
+</ul>
+<p><img src="stack-f1d6078b-9a67-4ae6-ae77-a71a6fbc6c0e.png" alt></p>
+<p>这是一个从下到上的简易描述。</p>
+<h2 id="网络"><a href="#网络" class="headerlink" title="网络"></a>网络</h2><p>网络提供点对点的传输在两个节点之间（可信或者不可信）。 主要处理：</p>
+<ul>
+<li>NAT遍历   - 打孔、端口映射和中继</li>
+<li>支持多种传输协议  - TCP、 SCTP、UTP…</li>
+<li>支持加密，签名或清除通信</li>
+<li>支持加密、签名和清除通信</li>
+<li>多路复用   - 连接复用、协议复用、peer复用</li>
+</ul>
+<h2 id="路由-—-发现节点和数据"><a href="#路由-—-发现节点和数据" class="headerlink" title="路由 — 发现节点和数据"></a>路由 — 发现节点和数据</h2><p>IPFS路由层有两个重要的目的</p>
+<ul>
+<li>节点路由     -找出其他节点</li>
+<li>内容寻址     -查找分发到ipfs上的数据</li>
+</ul>
+<p>路由系统是满足各种实现的接口，比如：</p>
+<ul>
+<li>DHTs</li>
+<li>mdns</li>
+<li>snr</li>
+<li>dns</li>
+</ul>
+<h2 id="块交换-—-传输内容寻址的数据"><a href="#块交换-—-传输内容寻址的数据" class="headerlink" title="块交换 — 传输内容寻址的数据"></a>块交换 — 传输内容寻址的数据</h2><p>IPFS 块交换负责批量数据的传输。一旦节点之间相互连接并且认证之后，交换协议就开始传输数据。</p>
+<p>块交换是满足以下实现的接口。比如：</p>
+<ul>
+<li>Bitswap   - IPFS中主要的交换协议。</li>
+<li>HTTP  - 一个简单的通过HTTP客户端和服务端实现的交易。</li>
+</ul>
+<h2 id="MerkleDag"><a href="#MerkleDag" class="headerlink" title="MerkleDag"></a>MerkleDag</h2><p>正如前面提到的，IPFS merkleDag 是IPFS核心的数据结构。它是边为hash值的有向无环图。它的另一个名称是Merkleweb。</p>
+<p>Merkledag 数据结构如下所示：</p>
+<pre><code>message MDagLink{
+    bytes Hash = 1;  //  multihash of the target object
+    string Name = 2;  // utf string name. should be unique per object
+    uint64 Tsize = 3 ; // cumulative size of target object
+}
+message MDagNode {
+    MDagLink  Links = 2;  //refs to other objects
+    bytes Data = 1;    //opaque user data
+}
+</code></pre><p>Merkledag 是认证的“瘦腰”数据结构。它是最小的表示+传输任意认证数据结构的数据结构。更加复杂的数据结构都是利用merkledag来实现的。比如：</p>
+<ul>
+<li>git 以及其他的版本管理系统</li>
+<li>bitcoin 和其他的链</li>
+<li>unixfs 一个内容寻址的文件unix 文件系统</li>
+</ul>
+<h2 id="MerkleDag-路径"><a href="#MerkleDag-路径" class="headerlink" title="MerkleDag 路径"></a>MerkleDag 路径</h2><p>merkledag足以解决路径问题</p>
+<p>/ipfs/QmdpMvUptHuGysVn6mj69K53EhitFd2LzeHCmHrHasHjVX/test/foo</p>
+<ul>
+<li>(a) 首先会获取+解析QmdpMvUptHuGysVn6mj69K53EhitFd2LzeHCmHrHasHjVX</li>
+<li>(b) 然后查询(a)的链接，找到test的哈希，并解析</li>
+<li>(c) 然后查询(b)的链接，找到foo的哈希，并解析</li>
+</ul>
+<h2 id="命名-——PKI命名空间和可变指针"><a href="#命名-——PKI命名空间和可变指针" class="headerlink" title="命名  ——PKI命名空间和可变指针"></a>命名  ——PKI命名空间和可变指针</h2><p>IPFS主要关注内容寻址，这本质上是不可变的。改变一个文件也会改变它的hash值，也就改变了其地址，使它成为一个完全不同的对象。(可以把它想象成一个写时复制的文件系统)</p>
+<p>IPFS命名层 — 或者IPNS</p>
+<ul>
+<li>指向对象的可变指针</li>
+<li>人类可读的名称</li>
+</ul>
+<p>IPNS是基于SFS的。 它是一个PKI命名空间。名称只是公钥的hash值。掌控私钥的人掌控名称。记录被私钥签名并且分发(在IPFS中，通过路由系统)。这是在互联网上实现的一种基于平均主义的分配方式。即没有中心化的机构，也不存在证实颁发部门。</p>
+<h2 id="应用和数据结构——在IPFS的上层"><a href="#应用和数据结构——在IPFS的上层" class="headerlink" title="应用和数据结构——在IPFS的上层"></a>应用和数据结构——在IPFS的上层</h2><p>到目前为止描述的技术栈足以用来表示任意的数据结构并在互联网上复制它们。同时也已经足以构建和部署去中心化的网站。</p>
+<p>在IPFS上的应用和数据结构用merkledag来表示。用户可以创建任意的数据结构并且部署在全世界。</p>
+<h2 id="Unixfs-—代表传统的文件"><a href="#Unixfs-—代表传统的文件" class="headerlink" title="Unixfs  —代表传统的文件"></a>Unixfs  —代表传统的文件</h2><p>unix文件系统抽象 ——文件和目录——是人们在互联网上构建文件的主要方式。在IPFS中unixfs是表示IPFS之上的unix文件的数据结构。我们需要一个独立的数据结构来传递信息。</p>
+<ul>
+<li>对象或者目录</li>
+<li>总大小，减去索引的开销</li>
+</ul>
+<h2 id="获取对象的生命周期"><a href="#获取对象的生命周期" class="headerlink" title="获取对象的生命周期"></a>获取对象的生命周期</h2><p>假设我们IPFS中获取以下数据</p>
+<pre><code>ipfs/QmdpMvUptHuGysVn6mj69K53EhitFd2LzeHCmHrHasHjVX/test/foo
+</code></pre><p>IPFS 节点首先将路径拆分成如下形式：</p>
+<pre><code>[ &quot;QmdpMvUptHuGysVn6mj69K53EhitFd2LzeHCmHrHasHjVX&quot;, &quot;test&quot;, &quot;foo&quot; ]
+</code></pre><p>然后IPFS节点解析组件。第一个组件是/ipfs/… path总是multihash值，剩下的就是链接名称。</p>
+<h1 id="IPFS用户接口"><a href="#IPFS用户接口" class="headerlink" title="IPFS用户接口"></a>IPFS用户接口</h1><p>IPFS不仅仅是一个协议。它是一个工具集。IPFS实现包括处理Merkle的各种工具，如何部署、如何命名等等。这些接口可能对实现或整个项目的生存至关重要。这些接口控制人们如何使用IPFS。因此必须特别注意其设计和实现。比如：</p>
+<ul>
+<li>IPFS api   - 一个HTTP服务</li>
+<li>IPFS cli    - 一个unix 命令</li>
+<li>IPFS libs  - 各种语言的实现</li>
+<li>The IPFS gateways  - 互联网中通过IPFS提供的HTTP节点</li>
+</ul>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/IPFS/" rel="tag"># IPFS</a>
+          
+            <a href="/tags/架构/" rel="tag"># 架构</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/09/12/Python学习路线浅谈/" rel="next" title="Python学习路线浅谈">
+                <i class="fa fa-chevron-left"></i> Python学习路线浅谈
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/09/18/Bitswap原理及实现/" rel="prev" title="Bitswap原理及实现">
+                Bitswap原理及实现 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">Magic</p>
+              <p class="site-description motion-element" itemprop="description">记录所学、所感、所想</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">14</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">8</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">12</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#目录"><span class="nav-number">1.</span> <span class="nav-text">目录</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#IPFS-和Merkle-DAG"><span class="nav-number">2.</span> <span class="nav-text">IPFS 和Merkle DAG</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#节点和网络模型"><span class="nav-number">3.</span> <span class="nav-text">节点和网络模型</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#技术栈"><span class="nav-number">4.</span> <span class="nav-text">技术栈</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#网络"><span class="nav-number">5.</span> <span class="nav-text">网络</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#路由-—-发现节点和数据"><span class="nav-number">6.</span> <span class="nav-text">路由 — 发现节点和数据</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#块交换-—-传输内容寻址的数据"><span class="nav-number">7.</span> <span class="nav-text">块交换 — 传输内容寻址的数据</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#MerkleDag"><span class="nav-number">8.</span> <span class="nav-text">MerkleDag</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#MerkleDag-路径"><span class="nav-number">9.</span> <span class="nav-text">MerkleDag 路径</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#命名-——PKI命名空间和可变指针"><span class="nav-number">10.</span> <span class="nav-text">命名  ——PKI命名空间和可变指针</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#应用和数据结构——在IPFS的上层"><span class="nav-number">11.</span> <span class="nav-text">应用和数据结构——在IPFS的上层</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Unixfs-—代表传统的文件"><span class="nav-number">12.</span> <span class="nav-text">Unixfs  —代表传统的文件</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#获取对象的生命周期"><span class="nav-number">13.</span> <span class="nav-text">获取对象的生命周期</span></a></li></ol><li class="nav-item nav-level-1"><a class="nav-link" href="#IPFS用户接口"><span class="nav-number"></span> <span class="nav-text">IPFS用户接口</span></a></li></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Magic</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Muse</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

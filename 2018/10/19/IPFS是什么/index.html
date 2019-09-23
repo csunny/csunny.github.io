@@ -1,0 +1,791 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="IPFS,">
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="前言相信很多人开始接触IPFS，首先会问，IPFS是什么， 它到底是干嘛的？ 如果我使用它，他能给我带来什么好处？又能创造怎么样的价值？   结缘IPFS相比之下，我是比较幸运的。 我当时使用IPFS，正好是因为它可以解决我在开发中的使用场景。当时准备开发一个原创图片的内容分享网站。以下是当时项目的一些简单的描述：  创艺云平台项目计划  项目定位 创艺云平台基于区块链共识机制，采用区块链技术与智">
+<meta name="keywords" content="IPFS">
+<meta property="og:type" content="article">
+<meta property="og:title" content="IPFS是什么?">
+<meta property="og:url" content="http://yoursite.com/2018/10/19/IPFS是什么/index.html">
+<meta property="og:site_name" content="Magic&#39;s Blog">
+<meta property="og:description" content="前言相信很多人开始接触IPFS，首先会问，IPFS是什么， 它到底是干嘛的？ 如果我使用它，他能给我带来什么好处？又能创造怎么样的价值？   结缘IPFS相比之下，我是比较幸运的。 我当时使用IPFS，正好是因为它可以解决我在开发中的使用场景。当时准备开发一个原创图片的内容分享网站。以下是当时项目的一些简单的描述：  创艺云平台项目计划  项目定位 创艺云平台基于区块链共识机制，采用区块链技术与智">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https://www.notion.so/020abfa5c01a473b8d6a8520eb38ed86">
+<meta property="og:image" content="http://yoursite.com/2018/10/19/IPFS是什么/Untitled-5bb2601d-63dd-4de4-ac00-260f8c17c042.png">
+<meta property="og:image" content="http://yoursite.com/2018/10/19/IPFS是什么/Untitled-27641044-d28c-446e-919d-e245cf2eccb1.png">
+<meta property="og:updated_time" content="2019-09-22T08:46:16.822Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="IPFS是什么?">
+<meta name="twitter:description" content="前言相信很多人开始接触IPFS，首先会问，IPFS是什么， 它到底是干嘛的？ 如果我使用它，他能给我带来什么好处？又能创造怎么样的价值？   结缘IPFS相比之下，我是比较幸运的。 我当时使用IPFS，正好是因为它可以解决我在开发中的使用场景。当时准备开发一个原创图片的内容分享网站。以下是当时项目的一些简单的描述：  创艺云平台项目计划  项目定位 创艺云平台基于区块链共识机制，采用区块链技术与智">
+<meta name="twitter:image" content="https://www.notion.so/020abfa5c01a473b8d6a8520eb38ed86">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2018/10/19/IPFS是什么/">
+
+
+
+
+
+  <title>IPFS是什么? | Magic's Blog</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Magic's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">个人博客</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/10/19/IPFS是什么/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Magic">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Magic's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">IPFS是什么?</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-10-19T10:29:43+08:00">
+                2018-10-19
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/IPFS/" itemprop="url" rel="index">
+                    <span itemprop="name">IPFS</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>相信很多人开始接触IPFS，首先会问，IPFS是什么， 它到底是干嘛的？ 如果我使用它，他能给我带来什么好处？又能创造怎么样的价值？ </p>
+<hr>
+<h2 id="结缘IPFS"><a href="#结缘IPFS" class="headerlink" title="结缘IPFS"></a>结缘IPFS</h2><p>相比之下，我是比较幸运的。 我当时使用IPFS，正好是因为它可以解决我在开发中的使用场景。当时准备开发一个原创图片的内容分享网站。以下是当时项目的一些简单的描述：</p>
+<blockquote>
+<p>创艺云平台项目计划</p>
+</blockquote>
+<p>项目定位</p>
+<p>创艺云平台基于区块链共识机制，采用区块链技术与智能合约来解决当前原创艺术图片内容系统中遇到的盗版、侵权等诸多问题，旨在开创一个创艺开发，互信，有偿的内容新天地。</p>
+<p>创艺云平台整合创作版权方、需求方，通过区块链应用平台去中心化内容协议，赋予自身内容平台上所有用户更多的权益保障和能都，实现内容价值公平分配。<br><a id="more"></a></p>
+<p><img src="https://www.notion.so/020abfa5c01a473b8d6a8520eb38ed86" alt="项目计划"><br>还有一个不成熟的商业模式。</p>
+<p><img src="Untitled-5bb2601d-63dd-4de4-ac00-260f8c17c042.png" alt></p>
+<p>还有半死不活的发展路线图</p>
+<p><img src="Untitled-27641044-d28c-446e-919d-e245cf2eccb1.png" alt></p>
+<p>当然，前面这些都不是重点。重点是因为这个项目，我接触到了IPFS。IPFS解决了我对于图片的分布式存储，而不是存储在中心化的服务器上。 同时IPFS的MerkleDAG数据结构也保证了我数据的唯一、不可篡改。一次上传，永久有效，且能永久追踪。 </p>
+<h2 id="深入研究"><a href="#深入研究" class="headerlink" title="深入研究"></a>深入研究</h2><pre><code>由于以上背景，可以说IPFS深深吸引了我，后来就花了大量的时间来研究IPFS。从阅读IPFS白皮书开始，后来开始翻译白皮书，翻译文档。使用IPFS搭建个人博客，再到熟悉IPFS技术架构，阅读IPFS源码。这一路走来，IPFS给我留下了深刻的印象。尽管，目前为止，IPFS还有很多方面不够成熟，尽管IPFS还有很多代码没有写完。但，这丝毫不影响它独有的魅力与宏大的野心。
+</code></pre><p>最近，随着IPFS整个项目的拆分与整理。IPFS彰显了更大、更宏伟的野心与梦想。正如IPFS官网所说，IPFS旨在取代HTTP，在我看来IPFS还能做更多。不管最终能否成功，我都会在这个过程中做一个参与者与见证人。</p>
+<h2 id="IPFS是什么？"><a href="#IPFS是什么？" class="headerlink" title="IPFS是什么？"></a>IPFS是什么？</h2><p>前面说了那么多，那么IPFS究竟是什么？</p>
+<p>IPFS官网是这么描述的：</p>
+<p>IPFS is the Distributed Web， A peer-to-peer hypermedia protocol to make the web faster，safer，and more open.</p>
+<p>IPFS是分布式Web，是点对点的超媒体协议，可以让我们的web服务更快、更安全、更开放。</p>
+<p>这里相信有很多人有疑问，既然说IPFS是下一代的web，那么它有什么区别，又有什么优势？</p>
+<p>其实在我看来，IPFS与传统web最本质的区别就是思维方式的区别。或者说<strong>IPFS是一种新的思维模式</strong>。 </p>
+<p>我们知道，在传统的web服务时代，我们寻找内容的方式是，首先知道存储文件的服务器地址(比如域名)然后通过服务器来查找自己需要的资源。当然，这里要提一下搜索引擎，因为有像google或者baidu这样的搜索引擎，所以在我们检索文件时，我们会错误的以为自己是根据内容寻地址(网站)。</p>
+<p>而在IPFS的世界里，我们不需要知道文件存储的服务器地址，我们只需要文件的唯一指纹，就可以在全网进行查找我们需要的文件。所以IPFS是基于<strong>内容寻址</strong>的分布式WEB系统。</p>
+<p>当然，除此之外，还有人说:</p>
+<ul>
+<li>IPFS是一种协议<ul>
+<li>定义一种基于内容寻址的文件系统</li>
+<li>协调内容的分发</li>
+<li>结合了Kademlia分布式Hash表+BitTorrent协议+git分布式文件系统</li>
+</ul>
+</li>
+<li>IPFS是一种文件系统<ul>
+<li>有文件夹和文件</li>
+<li>可以进行文件挂载(通过fuse)</li>
+</ul>
+</li>
+<li><p>IPFS是Web系统</p>
+<ul>
+<li>可以用来像web一样浏览文档</li>
+<li>可以通过HTTP请求的方式获取文件</li>
+<li>哈希加密的地址可以保证内容的唯一性</li>
+</ul>
+</li>
+<li><p>IPFS是一个模块</p>
+<ul>
+<li>在任何网络协议上的连接层</li>
+<li>路由层</li>
+<li>路由层使用分布式hash表</li>
+<li>使用基于路径的命名服务</li>
+<li>使用受到Bittorrent启发的块交换协议</li>
+</ul>
+</li>
+<li><p>IPFS使用了加密算法</p>
+<ul>
+<li>内容地址是经过加密的哈希</li>
+<li>数据块层的数据去重</li>
+<li>文件压缩并打版本</li>
+<li>文件层的加密和验证支持</li>
+</ul>
+</li>
+<li>IPFS是P2P网络<ul>
+<li>全球化的点对点文件传输</li>
+<li>完全的分布式架构</li>
+<li>不存在中心节点失效</li>
+</ul>
+</li>
+<li><p>IPFS是一种CDN网络</p>
+<ul>
+<li>文件添加到本地文件系统，节点加入到IPFS对等网络就可以全球共享</li>
+<li>友好的缓存</li>
+<li>基于bittorrent的带宽分配</li>
+</ul>
+</li>
+<li><p>IPFS是一种命名服务</p>
+<ul>
+<li>IPNS，受SFS启发的命名系统</li>
+<li>基于PKI的全局命名空间</li>
+<li>有助于建立信任链</li>
+<li>和其他的NSes兼容</li>
+<li>可以映射DNS，.onion .bit 等到IPFS</li>
+</ul>
+</li>
+</ul>
+<h2 id="How-It-Work？"><a href="#How-It-Work？" class="headerlink" title="How It Work？"></a>How It Work？</h2><p>关于IPFS的使用，在本文中我就不介绍了，感兴趣的同学可以关注我的另一个专栏《EOS区块链技术开发》里面有几篇介绍IPFS详细使用的教程。IPFS个人博客，是我之前用IPFS写的一个个人博客系统。源码在我的github里面，作为一个简单的demo，欢迎大家交流。</p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>以上就是我跟IPFS的结缘以及IPFS的简单介绍。最近随着IPFS开发者社区的不断壮大。IPFS项目被拆分成了很多子项目。典型的三个项目就是libp2p, 目前IPFS网络层跟路由层都拆分到libp2p当中。其次IPLD主要围绕MerkerDAG算法，承载了IPFS核心的数据结构。Bitswap是IPFS当中核心的数据交易所。这些项目目前都在快速发展着，代码更新相当活跃。</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/IPFS/" rel="tag"># IPFS</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/09/20/IPFS使用教程及案例大全/" rel="next" title="IPFS使用教程及案例大全">
+                <i class="fa fa-chevron-left"></i> IPFS使用教程及案例大全
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">Magic</p>
+              <p class="site-description motion-element" itemprop="description">记录所学、所感、所想</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">14</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">8</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">12</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#结缘IPFS"><span class="nav-number">2.</span> <span class="nav-text">结缘IPFS</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#深入研究"><span class="nav-number">3.</span> <span class="nav-text">深入研究</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#IPFS是什么？"><span class="nav-number">4.</span> <span class="nav-text">IPFS是什么？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#How-It-Work？"><span class="nav-number">5.</span> <span class="nav-text">How It Work？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#总结"><span class="nav-number">6.</span> <span class="nav-text">总结</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Magic</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Muse</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
